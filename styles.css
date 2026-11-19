@@ -1,0 +1,309 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 40px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  color: #1f2328;
+  -webkit-font-smoothing: antialiased;
+}
+
+.todo-card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 36px 28px;
+  background: #ffffff;
+  border: 1.5px solid #9ca3af;
+  border-radius: 14px;
+}
+
+/* 1. Header */
+h1 {
+  margin: 0 0 24px;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #1f2328;
+}
+
+/* 2. Add Form */
+.todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.todo-form input {
+  height: 44px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #1f2328;
+  background: #ffffff;
+  border: 1px solid #9ca3af;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.todo-form input:focus {
+  border-color: #374151;
+}
+
+.todo-form input::placeholder {
+  color: #6b7280;
+}
+
+#task-input {
+  flex: 1;
+  min-width: 0;
+}
+
+#hours-input {
+  width: 90px;
+}
+
+.btn-add {
+  height: 44px;
+  padding: 0 22px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #3f3f46;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-add:hover {
+  background-color: #27272a;
+}
+
+/* 3. Filters & Bulk Toggle */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-btn {
+  padding: 5px 14px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #52525b;
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+  color: #18181b;
+}
+
+.filter-btn.active {
+  color: #18181b;
+  font-weight: 500;
+  border-color: #27272a;
+}
+
+.text-action-btn {
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #52525b;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.text-action-btn:hover {
+  color: #18181b;
+}
+
+/* 4. Task List */
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Custom Checkbox */
+.todo-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1.5px solid #52525b;
+  border-radius: 4px;
+  background-color: #ffffff;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.todo-checkbox:checked {
+  background-color: #52525b;
+  border-color: #52525b;
+}
+
+.todo-checkbox:checked::after {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.task-title {
+  font-size: 0.98rem;
+  color: #1f2328;
+  word-break: break-word;
+  cursor: text;
+  user-select: none;
+}
+
+.todo-item.completed .task-title {
+  text-decoration: line-through;
+  color: #6b7280;
+}
+
+.todo-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+/* 5. Difficulty Pill Badges */
+.difficulty-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: text;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.difficulty-easy {
+  color: #1f2328;
+  background-color: #ffffff;
+  border: 1.25px solid #3f3f46;
+}
+
+.difficulty-medium {
+  color: #1f2328;
+  background-color: #e4e4e7;
+  border: 1.25px solid transparent;
+}
+
+.difficulty-hard {
+  color: #ffffff;
+  background-color: #3f3f46;
+  border: 1.25px solid #3f3f46;
+}
+
+.todo-item.completed .difficulty-badge {
+  opacity: 0.6;
+}
+
+/* Inline Edit Inputs */
+.inline-edit-title {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 4px 8px;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  outline: none;
+}
+
+.inline-edit-hours {
+  width: 68px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 3px 8px;
+  border: 1px solid #3f3f46;
+  border-radius: 9999px;
+  text-align: center;
+  outline: none;
+}
+
+.delete-btn {
+  padding: 0 2px;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: #52525b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.delete-btn:hover {
+  color: #18181b;
+}
+
+/* 6. Footer */
+.todo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: #52525b;
+}
+
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* 7. Hint */
+.hint-text {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: #52525b;
+}

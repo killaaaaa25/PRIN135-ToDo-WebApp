@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+</head>
+<body>
+  <h1>Todo List</h1>
+
+  <form id="todo-form">
+    <input type="text" id="task-input" value="Task 2" aria-label="Task name">
+    <input type="text" id="hours-input" value="1" aria-label="Estimated hours">
+    <button type="submit">Add</button>
+  </form>
+
+  <div id="filter-controls">
+    <button type="button" data-filter="all">All</button>
+    <button type="button" data-filter="active">Active</button>
+    <button type="button" data-filter="completed">Completed</button>
+  </div>
+
+  <div>
+    <button type="button" id="mark-all-btn">Mark all done</button>
+  </div>
+
+  <ul id="todo-list">
+    <li>
+      <input type="checkbox" checked>
+      <span class="task-title">Learn variables</span><span class="difficulty">Easy</span> &middot; <span class="hours">1h</span>
+      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
+    </li>
+    <li>
+      <input type="checkbox">
+      <span class="task-title">Learn conditional statements</span><span class="difficulty">Medium</span> &middot; <span class="hours">3h</span>
+      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
+    </li>
+    <li>
+      <input type="checkbox">
+      <span class="task-title">Learn Loops</span><span class="difficulty">Medium</span> &middot; <span class="hours">2.5h</span>
+      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
+    </li>
+    <li>
+      <input type="checkbox">
+      <span class="task-title">Learn Functions</span><span class="difficulty">Hard</span> &middot; <span class="hours">6h</span>
+      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
+    </li>
+  </ul>
+
+  <p id="status-bar">
+    <span id="items-left">3 items left</span> | <span id="hours-remaining">11.5 hours remaining</span>
+    <button type="button" id="clear-completed-btn">Clear completed</button>
+  </p>
+
+  <p id="instructions">
+    Easy: up to 2h | Medium: over 2h | Hard: over 5h.<br>
+    Double-click a task or its label to edit the text or hours. Press Enter to save, Esc to cancel.
+  </p>
+</body>
+</html>
