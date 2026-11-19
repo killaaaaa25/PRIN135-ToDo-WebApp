@@ -4,57 +4,270 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo List</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Todo List</h1>
+  <main class="todo-card">
+    <h1>Todo List</h1>
 
-  <form id="todo-form">
-    <input type="text" id="task-input" value="Task 2" aria-label="Task name">
-    <input type="text" id="hours-input" value="1" aria-label="Estimated hours">
-    <button type="submit">Add</button>
-  </form>
+    <form id="todo-form" class="todo-form">
+      <input
+        type="text"
+        id="task-input"
+        placeholder="What needs to be done?"
+        aria-label="Task name"
+        required
+      >
+      <input
+        type="number"
+        id="hours-input"
+        value="0"
+        min="0"
+        step="any"
+        aria-label="Estimated hours"
+      >
+      <button type="submit" class="btn-add">Add</button>
+    </form>
 
-  <div id="filter-controls">
-    <button type="button" data-filter="all">All</button>
-    <button type="button" data-filter="active">Active</button>
-    <button type="button" data-filter="completed">Completed</button>
-  </div>
+    <div class="controls-bar">
+      <div class="filter-group" id="filter-controls">
+        <button type="button" class="filter-btn active" data-filter="all">All</button>
+        <button type="button" class="filter-btn" data-filter="active">Active</button>
+        <button type="button" class="filter-btn" data-filter="completed">Completed</button>
+      </div>
+      <button type="button" id="mark-all-btn" class="text-action-btn">Mark all done</button>
+    </div>
 
-  <div>
-    <button type="button" id="mark-all-btn">Mark all done</button>
-  </div>
+    <ul id="todo-list" class="todo-list"></ul>
 
-  <ul id="todo-list">
-    <li>
-      <input type="checkbox" checked>
-      <span class="task-title">Learn variables</span><span class="difficulty">Easy</span> &middot; <span class="hours">1h</span>
-      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
-    </li>
-    <li>
-      <input type="checkbox">
-      <span class="task-title">Learn conditional statements</span><span class="difficulty">Medium</span> &middot; <span class="hours">3h</span>
-      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
-    </li>
-    <li>
-      <input type="checkbox">
-      <span class="task-title">Learn Loops</span><span class="difficulty">Medium</span> &middot; <span class="hours">2.5h</span>
-      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
-    </li>
-    <li>
-      <input type="checkbox">
-      <span class="task-title">Learn Functions</span><span class="difficulty">Hard</span> &middot; <span class="hours">6h</span>
-      <button type="button" class="delete-btn" aria-label="Delete task">&times;</button>
-    </li>
-  </ul>
+    <div class="todo-footer">
+      <span id="status-summary">3 items left &middot; 11 hours total</span>
+      <button type="button" id="clear-completed-btn" class="text-action-btn">Clear completed</button>
+    </div>
 
-  <p id="status-bar">
-    <span id="items-left">3 items left</span> | <span id="hours-remaining">11.5 hours remaining</span>
-    <button type="button" id="clear-completed-btn">Clear completed</button>
-  </p>
+    <p class="hint-text">
+      Easy: up to 2h &middot; Medium: over 2h &middot; Hard: over 5h.<br>
+      Double-click a task or its label to edit the text or hours. Press Enter to save, Esc to cancel.
+    </p>
+  </main>
 
-  <p id="instructions">
-    Easy: up to 2h | Medium: over 2h | Hard: over 5h.<br>
-    Double-click a task or its label to edit the text or hours. Press Enter to save, Esc to cancel.
-  </p>
+  <script>
+    const state = {
+      filter: "all",
+      tasks: [
+        { id: 1, title: "Reply to emails", hours: 1, completed: false },
+        { id: 2, title: "Fix login bug", hours: 4, completed: false },
+        { id: 3, title: "Build reports page", hours: 6, completed: false },
+        { id: 4, title: "Plan sprint", hours: 2, completed: true }
+      ]
+    };
+
+    const form = document.getElementById("todo-form");
+    const taskInput = document.getElementById("task-input");
+    const hoursInput = document.getElementById("hours-input");
+    const filterControls = document.getElementById("filter-controls");
+    const markAllBtn = document.getElementById("mark-all-btn");
+    const todoList = document.getElementById("todo-list");
+    const statusSummary = document.getElementById("status-summary");
+    const clearCompletedBtn = document.getElementById("clear-completed-btn");
+
+    function getDifficulty(hours) {
+      if (hours > 5) return { label: "Hard", className: "difficulty-hard" };
+      if (hours > 2) return { label: "Medium", className: "difficulty-medium" };
+      return { label: "Easy", className: "difficulty-easy" };
+    }
+
+    function formatHours(hours) {
+      return Number.isInteger(hours) ? String(hours) : String(Number(hours.toFixed(2)));
+    }
+
+    function render() {
+      const filteredTasks = state.tasks.filter((task) => {
+        if (state.filter === "active") return !task.completed;
+        if (state.filter === "completed") return task.completed;
+        return true;
+      });
+
+      todoList.innerHTML = "";
+
+      filteredTasks.forEach((task) => {
+        const li = document.createElement("li");
+        li.className = `todo-item${task.completed ? " completed" : ""}`;
+
+        const leftDiv = document.createElement("div");
+        leftDiv.className = "todo-left";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "todo-checkbox";
+        checkbox.checked = task.completed;
+        checkbox.addEventListener("change", () => {
+          task.completed = checkbox.checked;
+          render();
+        });
+
+        const titleSpan = document.createElement("span");
+        titleSpan.className = "task-title";
+        titleSpan.textContent = task.title;
+        titleSpan.addEventListener("dblclick", () => startEditingTitle(leftDiv, titleSpan, task));
+
+        leftDiv.append(checkbox, titleSpan);
+
+        const rightDiv = document.createElement("div");
+        rightDiv.className = "todo-right";
+
+        const diff = getDifficulty(task.hours);
+        const badge = document.createElement("span");
+        badge.className = `difficulty-badge ${diff.className}`;
+        badge.textContent = `${diff.label} \u00B7 ${formatHours(task.hours)}h`;
+        badge.addEventListener("dblclick", () => startEditingHours(rightDiv, badge, task));
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "delete-btn";
+        deleteBtn.setAttribute("aria-label", "Delete task");
+        deleteBtn.innerHTML = "&times;";
+        deleteBtn.addEventListener("click", () => {
+          state.tasks = state.tasks.filter((t) => t.id !== task.id);
+          render();
+        });
+
+        rightDiv.append(badge, deleteBtn);
+        li.append(leftDiv, rightDiv);
+        todoList.appendChild(li);
+      });
+
+      // Update filter button active states
+      filterControls.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.filter === state.filter);
+      });
+
+      // Update "Mark all done" / "Mark all active"
+      const allDone = state.tasks.length > 0 && state.tasks.every((t) => t.completed);
+      markAllBtn.textContent = allDone ? "Mark all active" : "Mark all done";
+
+      // Update footer stats
+      const activeTasks = state.tasks.filter((t) => !t.completed);
+      const completedCount = state.tasks.length - activeTasks.length;
+      const totalActiveHours = activeTasks.reduce((sum, t) => sum + t.hours, 0);
+
+      const itemLabel = activeTasks.length === 1 ? "item" : "items";
+      const hourLabel = totalActiveHours === 1 ? "hour" : "hours";
+      statusSummary.textContent = `${activeTasks.length} ${itemLabel} left \u00B7 ${formatHours(totalActiveHours)} ${hourLabel} total`;
+
+      // Show "Clear completed" only when at least one task is completed
+      clearCompletedBtn.classList.toggle("hidden", completedCount === 0);
+    }
+
+    function startEditingTitle(container, titleSpan, task) {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "inline-edit-title";
+      input.value = task.title;
+      let cancelled = false;
+
+      const commit = () => {
+        if (cancelled) return;
+        const trimmed = input.value.trim();
+        if (trimmed) task.title = trimmed;
+        render();
+      };
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          commit();
+        } else if (e.key === "Escape") {
+          cancelled = true;
+          render();
+        }
+      });
+
+      input.addEventListener("blur", commit);
+      container.replaceChild(input, titleSpan);
+      input.focus();
+      input.select();
+    }
+
+    function startEditingHours(container, badge, task) {
+      const input = document.createElement("input");
+      input.type = "number";
+      input.min = "0";
+      input.step = "any";
+      input.className = "inline-edit-hours";
+      input.value = task.hours;
+      let cancelled = false;
+
+      const commit = () => {
+        if (cancelled) return;
+        const parsed = parseFloat(input.value);
+        task.hours = !Number.isNaN(parsed) && parsed >= 0 ? parsed : 0;
+        render();
+      };
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          commit();
+        } else if (e.key === "Escape") {
+          cancelled = true;
+          render();
+        }
+      });
+
+      input.addEventListener("blur", commit);
+      container.replaceChild(input, badge);
+      input.focus();
+      input.select();
+    }
+
+    // Add task
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const title = taskInput.value.trim();
+      if (!title) return;
+
+      const parsedHours = parseFloat(hoursInput.value);
+      const hours = !Number.isNaN(parsedHours) && parsedHours >= 0 ? parsedHours : 0;
+
+      state.tasks.push({
+        id: Date.now(),
+        title,
+        hours,
+        completed: false
+      });
+
+      taskInput.value = "";
+      hoursInput.value = "0";
+      taskInput.focus();
+      render();
+    });
+
+    // Filter switching
+    filterControls.addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-btn");
+      if (!btn) return;
+      state.filter = btn.dataset.filter;
+      render();
+    });
+
+    // Toggle all tasks
+    markAllBtn.addEventListener("click", () => {
+      if (state.tasks.length === 0) return;
+      const allDone = state.tasks.every((t) => t.completed);
+      state.tasks.forEach((t) => {
+        t.completed = !allDone;
+      });
+      render();
+    });
+
+    // Clear completed tasks
+    clearCompletedBtn.addEventListener("click", () => {
+      state.tasks = state.tasks.filter((t) => !t.completed);
+      render();
+    });
+
+    render();
+  </script>
 </body>
 </html>
