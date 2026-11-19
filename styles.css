@@ -1,3 +1,35 @@
+:root {
+  --bg-page: #f3efe9;
+  --bg-card: #ffffff;
+  --bg-input: #ffffff;
+  --border-card: #d6cec2;
+  --border-subtle: #ebe6de;
+  --border-input: #c7beb0;
+  --card-shadow: 0 8px 24px rgba(28, 25, 23, 0.05);
+
+  --text-primary: #1c1917;
+  --text-secondary: #78716c;
+  --text-muted: #a8a29e;
+
+  --accent-primary: #1c1917;
+  --accent-hover: #44403c;
+  --accent-text: #ffffff;
+  --filter-active-bg: #f5f5f4;
+  --filter-active-border: #1c1917;
+
+  --easy-bg: #f5f5f4;
+  --easy-text: #44403c;
+  --easy-border: #d6d3d1;
+
+  --medium-bg: #fef3c7;
+  --medium-text: #92400e;
+  --medium-border: #fcd34d;
+
+  --hard-bg: #7f1d1d;
+  --hard-text: #fef2f2;
+  --hard-border: #7f1d1d;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -6,18 +38,20 @@ body {
   margin: 0;
   padding: 40px 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #ffffff;
-  color: #1f2328;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .todo-card {
   max-width: 600px;
   margin: 0 auto;
   padding: 32px 36px 28px;
-  background: #ffffff;
-  border: 1.5px solid #9ca3af;
-  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
 }
 
 /* 1. Header */
@@ -26,7 +60,7 @@ h1 {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #1f2328;
+  color: var(--text-primary);
 }
 
 /* 2. Add Form */
@@ -41,20 +75,21 @@ h1 {
   padding: 0 14px;
   font-family: inherit;
   font-size: 0.95rem;
-  color: #1f2328;
-  background: #ffffff;
-  border: 1px solid #9ca3af;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: 8px;
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .todo-form input:focus {
-  border-color: #374151;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 16%, transparent);
 }
 
 .todo-form input::placeholder {
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 #task-input {
@@ -72,16 +107,16 @@ h1 {
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ffffff;
-  background-color: #3f3f46;
+  color: var(--accent-text);
+  background-color: var(--accent-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .btn-add:hover {
-  background-color: #27272a;
+  background-color: var(--accent-hover);
 }
 
 /* 3. Filters & Bulk Toggle */
@@ -102,8 +137,8 @@ h1 {
   padding: 5px 14px;
   font-family: inherit;
   font-size: 0.9rem;
-  font-weight: 400;
-  color: #52525b;
+  font-weight: 500;
+  color: var(--text-secondary);
   background: transparent;
   border: 1.5px solid transparent;
   border-radius: 9999px;
@@ -112,29 +147,30 @@ h1 {
 }
 
 .filter-btn:hover {
-  color: #18181b;
+  color: var(--text-primary);
 }
 
 .filter-btn.active {
-  color: #18181b;
-  font-weight: 500;
-  border-color: #27272a;
+  color: var(--accent-primary);
+  background-color: var(--filter-active-bg);
+  border-color: var(--filter-active-border);
 }
 
 .text-action-btn {
   padding: 0;
   font-family: inherit;
   font-size: 0.9rem;
-  color: #52525b;
+  color: var(--text-secondary);
   background: none;
   border: none;
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
+  transition: color 0.15s ease;
 }
 
 .text-action-btn:hover {
-  color: #18181b;
+  color: var(--accent-primary);
 }
 
 /* 4. Task List */
@@ -150,7 +186,7 @@ h1 {
   justify-content: space-between;
   gap: 12px;
   padding: 15px 0;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .todo-left {
@@ -169,32 +205,36 @@ h1 {
   width: 18px;
   height: 18px;
   margin: 0;
-  border: 1.5px solid #52525b;
-  border-radius: 4px;
-  background-color: #ffffff;
+  border: 1.5px solid var(--border-input);
+  border-radius: 5px;
+  background-color: var(--bg-input);
   cursor: pointer;
   display: grid;
   place-content: center;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
+.todo-checkbox:hover {
+  border-color: var(--accent-primary);
+}
+
 .todo-checkbox:checked {
-  background-color: #52525b;
-  border-color: #52525b;
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
 }
 
 .todo-checkbox:checked::after {
   content: "";
   width: 10px;
   height: 6px;
-  border-left: 2px solid #ffffff;
-  border-bottom: 2px solid #ffffff;
+  border-left: 2px solid var(--accent-text);
+  border-bottom: 2px solid var(--accent-text);
   transform: rotate(-45deg) translate(1px, -1px);
 }
 
 .task-title {
   font-size: 0.98rem;
-  color: #1f2328;
+  color: var(--text-primary);
   word-break: break-word;
   cursor: text;
   user-select: none;
@@ -202,7 +242,7 @@ h1 {
 
 .todo-item.completed .task-title {
   text-decoration: line-through;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .todo-right {
@@ -226,54 +266,57 @@ h1 {
 }
 
 .difficulty-easy {
-  color: #1f2328;
-  background-color: #ffffff;
-  border: 1.25px solid #3f3f46;
+  color: var(--easy-text);
+  background-color: var(--easy-bg);
+  border: 1px solid var(--easy-border);
 }
 
 .difficulty-medium {
-  color: #1f2328;
-  background-color: #e4e4e7;
-  border: 1.25px solid transparent;
+  color: var(--medium-text);
+  background-color: var(--medium-bg);
+  border: 1px solid var(--medium-border);
 }
 
 .difficulty-hard {
-  color: #ffffff;
-  background-color: #3f3f46;
-  border: 1.25px solid #3f3f46;
+  color: var(--hard-text);
+  background-color: var(--hard-bg);
+  border: 1px solid var(--hard-border);
 }
 
 .todo-item.completed .difficulty-badge {
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 /* Inline Edit Inputs */
+.inline-edit-title,
+.inline-edit-hours {
+  font-family: inherit;
+  color: var(--text-primary);
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--accent-primary);
+  outline: none;
+}
+
 .inline-edit-title {
   flex: 1;
-  font-family: inherit;
   font-size: 0.95rem;
   padding: 4px 8px;
-  border: 1px solid #3f3f46;
   border-radius: 6px;
-  outline: none;
 }
 
 .inline-edit-hours {
   width: 68px;
-  font-family: inherit;
   font-size: 0.85rem;
   padding: 3px 8px;
-  border: 1px solid #3f3f46;
   border-radius: 9999px;
   text-align: center;
-  outline: none;
 }
 
 .delete-btn {
   padding: 0 2px;
   font-size: 1.15rem;
   line-height: 1;
-  color: #52525b;
+  color: var(--text-muted);
   background: none;
   border: none;
   cursor: pointer;
@@ -281,7 +324,7 @@ h1 {
 }
 
 .delete-btn:hover {
-  color: #18181b;
+  color: var(--hard-text);
 }
 
 /* 6. Footer */
@@ -291,7 +334,7 @@ h1 {
   justify-content: space-between;
   margin-top: 18px;
   font-size: 0.9rem;
-  color: #52525b;
+  color: var(--text-secondary);
 }
 
 .hidden {
@@ -305,5 +348,5 @@ h1 {
   text-align: center;
   font-size: 0.8rem;
   line-height: 1.55;
-  color: #52525b;
+  color: var(--text-muted);
 }
